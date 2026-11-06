@@ -1,0 +1,101 @@
+{
+  "_note": "The commander's tutorial. Steps run in order on sol 1. 'until' = what the player must do to move on (or 'next': true for a Next button). 'skipIf' = skip the step if already true. 'target' = CSS selector to spotlight (null = the map). Portraits: an emoji placeholder for now; replace with an image path like 'assets/commander-happy.png' when the art is ready.",
+  "commander": {
+    "name": "Commander Nova",
+    "portraits": {
+      "neutral": "👩‍🚀",
+      "happy": "👩‍🚀",
+      "worried": "👩‍🚀",
+      "pointing": "👩‍🚀"
+    }
+  },
+  "steps": [
+    {
+      "id": "hello",
+      "mood": "happy",
+      "text": "Welcome to Mars! I'm Commander Nova. Our crew of 4 just landed, and keeping them alive is your job. I'll show you the basics.",
+      "next": true
+    },
+    {
+      "id": "supplies",
+      "mood": "neutral",
+      "target": "#stats",
+      "text": "These are our supplies. Keep an eye on 'sols left'. A sol is one day on Mars, about 40 minutes longer than a day on Earth.",
+      "next": true
+    },
+    {
+      "id": "task",
+      "mood": "neutral",
+      "target": "#task-panel",
+      "text": "Mission control sends one task every sol. Finish it for a reward. Today's job: we need air!",
+      "next": true
+    },
+    {
+      "id": "open_shop",
+      "mood": "pointing",
+      "target": "#build-btn",
+      "text": "Tap Build to see what we can construct.",
+      "until": { "type": "shopOpen" }
+    },
+    {
+      "id": "pick_oxygen",
+      "mood": "pointing",
+      "target": "[data-build=oxygen_plant]",
+      "text": "Pick the Oxygen Plant. It turns carbon dioxide from the Martian air into oxygen we can breathe.",
+      "until": { "type": "placing", "building": "oxygen_plant" }
+    },
+    {
+      "id": "place_oxygen",
+      "mood": "pointing",
+      "target": null,
+      "text": "Now tap a spot on the map near the habitat. Green means it fits, red means it doesn't.",
+      "until": { "type": "hasBuilding", "building": "oxygen_plant" }
+    },
+    {
+      "id": "power",
+      "mood": "worried",
+      "target": "[data-chip=power]",
+      "text": "Uh oh, the Oxygen Plant uses a lot of power and our Power number is negative. Build Solar Arrays until it's positive.",
+      "skipIf": { "type": "power", "min": 0 },
+      "until": { "type": "power", "min": 0 }
+    },
+    {
+      "id": "rover",
+      "mood": "pointing",
+      "target": null,
+      "text": "Building costs metal. See the 🔩 rocks? Those are iron meteorites. Tap one to send our rover to collect it. Each trip uses some battery power.",
+      "until": { "type": "roverOut" }
+    },
+    {
+      "id": "start",
+      "mood": "happy",
+      "target": "#controls",
+      "text": "We're ready. Press Start sol and time starts running.",
+      "until": { "type": "phase", "phase": "running" }
+    },
+    {
+      "id": "end",
+      "mood": "neutral",
+      "target": "#controls",
+      "text": "While the sol runs, rovers drive and supplies change. When you've done what you need, press End sol to skip to the end of the day.",
+      "until": { "type": "report" }
+    },
+    {
+      "id": "report",
+      "mood": "happy",
+      "target": "#report .panel",
+      "text": "Every sol ends with a report: what went up, what went down, and how your task went. That's the basics. I'll be on the radio if anything happens. Good luck!",
+      "next": true
+    }
+  ],
+  "tips": {
+    "decision": {
+      "mood": "worried",
+      "text": "A Mars event! Every choice has a cost, so think about what our base can handle. The 'This really happened' box is a true story from a real space mission."
+    },
+    "ended": {
+      "mood": "neutral",
+      "text": "Every mission teaches something, even a failed one. Read why it ended, then try again with a new plan."
+    }
+  }
+}
