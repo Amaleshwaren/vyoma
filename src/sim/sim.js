@@ -149,7 +149,7 @@ export function createState(sectorId, data) {
       regolith: balance.start.regolith ?? 0,
       battery: balance.start.battery ?? 0,
     },
-    sheilding: 0,
+    shielding: 0,
     events: { pending: null, active: [], log: [], lastSol: 0, dust: 0},
     doseMsv: 0,
     grid,
