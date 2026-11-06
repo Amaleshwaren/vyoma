@@ -118,7 +118,7 @@ export class GameController {
 
   // the report closes into the next sol's briefing
   closeReport() {
-    if (this.phase === 'report') return;
+    if (this.phase !== 'report') return;
     if (this.state.events.pending) {
       this.setPhase('decision');
       bus.emit('decision', describePending(this.state, this.data));

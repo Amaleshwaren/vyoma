@@ -48,7 +48,7 @@
       "cost": 30,
       "speCut": 0.25,
       "gcrCut": 0.05,
-      "_shielding": "Each level of regolith on the habitat cuts solar strom dose by 25% bu everyday cosmic-ray dose by only 5%. That matches reality: cosmix rays are very hard to block."
+      "_shielding": "Each level of regolith on the habitat cuts solar storm dose by 25% bu everyday cosmic-ray dose by only 5%. That matches reality: cosmic rays are very hard to block."
     }
   },
   "failure": {

@@ -64,7 +64,7 @@ export class OutpostScene extends Phaser.Scene {
     this.ghostArea = this.add.graphics().setDepth(2).setVisible(false);
     this.ghost = this.add.image(0, 0, 'tile_hover').setOrigin(0, 1).setAlpha(0.6).setDepth(500).setVisible(false);
 
-    // dust storm haze: a screen-sized orange viel, fixed to the camera, visible only during a storm
+    // dust storm haze: a screen-sized orange veil, fixed to the camera, visible only during a storm
     this.haze = this.add
       .rectangle(0, 0, this.scale.width, this.scale.height, 0xc8803c, 0.28)
       .setOrigin(0)
@@ -108,7 +108,7 @@ export class OutpostScene extends Phaser.Scene {
   update(time) {
     // phaser smooths and caps 'delta' when the frame rate drops, which would make game time run slow on
     // weak laptops. We measure real elapsed time from the frame timestamps instead.
-    const real = this.lastTime === undefined ? 0 : time - time.lastTime;
+    const real = this.lastTime === undefined ? 0 : time - this.lastTime;
     this.lastTime = time;
     this.controller.update(real);
     this.positionRovers();
