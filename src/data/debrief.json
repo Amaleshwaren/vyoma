@@ -1,0 +1,81 @@
+{
+  "_note": "All end-of-mission text. Words in {braces} are filled in by the game. mainProducers = buildings whose absence gets the 'never built' line; producers = buildings checked for power cuts.",
+  "causes": {
+    "oxygen": {
+      "headline": "Mission failed on sol {sol}: the crew ran out of oxygen.",
+      "need": "Your crew of {crew} breathes about {need} kg of oxygen every sol.",
+      "neverBuilt": "You never built an {names}, so the only oxygen was the supply you landed with.",
+      "producers": [
+        "oxygen_plant",
+        "greenhouse"
+      ],
+      "lesson": "Mars air is about 95% carbon dioxide and far too thin to breathe. Oxygen can be made from that CO₂, as NASA's MOXIE experiment proved on Mars, but it takes a lot of power. Your oxygen supply is really a power problem.",
+      "mainProducers": [
+        "oxygen_plant"
+      ]
+    },
+    "water": {
+      "headline": "Mission failed on sol {sol}: the crew ran out of water.",
+      "need": "Your crew of {crew} needs about {need} kg of water every sol, and greenhouses drink water too.",
+      "neverBuilt": "You never built an {names}, so the only water was the supply you landed with.",
+      "producers": [
+        "water_extractor",
+        "water_recycler"
+      ],
+      "lesson": "Mars has lots of water, but it's frozen in the ground and the polar caps. Getting it out means digging and heating, which costs power. Recycling matters just as much: the space station reuses about 98% of its water.",
+      "mainProducers": [
+        "water_extractor"
+      ]
+    },
+    "food": {
+      "headline": "Mission failed on sol {sol}: the crew ran out of food.",
+      "need": "Your crew of {crew} eats about {need} kg of food every sol.",
+      "neverBuilt": "You never built a {names}, so the only food was the supply you landed with.",
+      "producers": [
+        "greenhouse"
+      ],
+      "cropLost": "{n} greenhouse crops died from lack of power or water. Each lost crop restarts the {grow}-sol growing time.",
+      "lesson": "Crops take weeks to grow, so a greenhouse built late can't save a crew that's already hungry. Plants also need light, warmth and water, and on Mars all three cost power.",
+      "mainProducers": [
+        "greenhouse"
+      ]
+    },
+    "radiation": {
+      "headline": "Mission aborted on sol {sol}: the crew went over their radiation limit.",
+      "lines": [
+        "Your crew absorbed {dose} mSv on the surface. The mission limit was {budget} mSv.",
+        "{sector} gets {mult}× the average Mars surface radiation."
+      ],
+      "lesson": "Mars has no global magnetic field and a thin atmosphere, so space radiation reaches the ground. At these levels it doesn't make you sick straight away, but it raises the risk of cancer later in life. That's why NASA limits how much radiation an astronaut can receive over their whole career."
+    },
+    "habitat_power": {
+      "headline": "Mission failed on sol {sol}: the habitat lost power.",
+      "lines": [
+        "The habitat had no power on {n} of the last {w} sols. On those sols the base needed {needed} kWh but only made {made} kWh."
+      ],
+      "lesson": "Without power, the habitat's heaters and air systems stop, and nobody survives a Martian night without them. Life support should always be first in line for power."
+    }
+  },
+  "shared": {
+    "noPower": "Your {names} had no power on {n} sols. On those sols the base needed {needed} kWh but only made {made} kWh.",
+    "notEnough": "Over the last {k} sols you were losing about {loss} kg of {resource} per sol.",
+    "skippedTask": "On sol {sol}, mission control asked you to \"{title}\". That task was skipped.",
+    "leftBroken": " It was never repaired."
+  },
+  "complete": {
+    "headline": "Mission complete! Your crew survived {sol} sols in {sector}.",
+    "lines": [
+      "Radiation dose: {dose} of {budget} mSv.",
+      "Buildings constructed: {built}.",
+      "Metal scavenged by rovers: {scavenged}.",
+      "Mission control tasks completed: {tasksDone} of {tasksTotal}."
+    ],
+    "lesson": "A real Mars mission would stay on the surface for around 500 days, waiting for Earth and Mars to line up again for the trip home. Could your base last that long?"
+  },
+  "score":{
+    "line": "Mission score: {score}",
+    "survived": "crew survived",
+    "tasks": "60%+ of tasks done",
+    "radiation": "dose under 60% of the limit"
+  }
+}

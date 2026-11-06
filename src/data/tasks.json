@@ -1,0 +1,160 @@
+{
+  "_note": "Mission control tasks. Each sol gets ONE task: first an urgent reactive one if its 'when' is true, else the scripted task for that sol, else the next unused general task. Tasks already done when assigned are skipped. 'done' types: hasBuilding (building, count, powered), buildMore (building, count), roverSent (node), powerBalance (min), resourceAtLeast (resource, value), projectedNetAtLeast (resource, value). 'when' types: solsLeftBelow (resource, value), powerBalanceBelow (value). relatesTo links a skipped task to a failure cause in the debrief.",
+  "reactive": [
+    {
+      "id": "oxygen_low",
+      "title": "Oxygen emergency",
+      "text": "Less than 8 sols of oxygen left at this rate. Get oxygen production above what the crew breathes.",
+      "when": { "type": "solsLeftBelow", "resource": "oxygen", "value": 8 },
+      "done": { "type": "projectedNetAtLeast", "resource": "oxygen", "value": 0 },
+      "reward": { "metal": 10 },
+      "relatesTo": "oxygen",
+      "why": "Life support always comes first. Oxygen plants need power, so check your power balance too."
+    },
+    {
+      "id": "water_low",
+      "title": "Water running out",
+      "text": "Less than 8 sols of water left at this rate. Make or save more water than you use.",
+      "when": { "type": "solsLeftBelow", "resource": "water", "value": 8 },
+      "done": { "type": "projectedNetAtLeast", "resource": "water", "value": 0 },
+      "reward": { "metal": 10 },
+      "relatesTo": "water",
+      "why": "An Ice Drill makes water; a Water Recycler stops you wasting it. Greenhouses drink water too."
+    },
+    {
+      "id": "food_low",
+      "title": "Food running low",
+      "text": "Less than 8 sols of food left. Build another greenhouse now: crops take time.",
+      "when": { "type": "solsLeftBelow", "resource": "food", "value": 8 },
+      "done": { "type": "buildMore", "building": "greenhouse", "count": 1 },
+      "reward": { "metal": 10 },
+      "relatesTo": "food",
+      "why": "A greenhouse only starts feeding the crew once its first crop is ready."
+    },
+    {
+      "id": "power_negative",
+      "title": "Power shortage",
+      "text": "Your base uses more power than it makes. Fix the balance before systems shut down.",
+      "when": { "type": "powerBalanceBelow", "value": 0 },
+      "done": { "type": "powerBalance", "min": 0 },
+      "reward": { "metal": 10 },
+      "relatesTo": "habitat_power",
+      "why": "In a shortage, the least important systems switch off first. Life support is protected, but not forever."
+    }
+  ],
+  "scripted": [
+    {
+      "id": "build_oxygen",
+      "sol": 1,
+      "title": "Make your own air",
+      "text": "Your crew landed with about 18 sols of oxygen. Build an Oxygen Plant and make sure it has power.",
+      "done": { "type": "hasBuilding", "building": "oxygen_plant", "powered": true },
+      "reward": { "metal": 15 },
+      "relatesTo": "oxygen",
+      "why": "Mars air is about 95% carbon dioxide. NASA's MOXIE experiment proved oxygen can be made from it on Mars."
+    },
+    {
+      "id": "scavenge_wreck",
+      "sol": 2,
+      "title": "Recycle the lander",
+      "text": "Send a rover to your lander wreckage. That's metal you don't have to ship from Earth.",
+      "done": { "type": "roverSent", "node": "lander_wreck" },
+      "reward": { "metal": 10 },
+      "why": "Reusing hardware already on Mars is part of 'living off the land'."
+    },
+    {
+      "id": "start_greenhouse",
+      "sol": 3,
+      "title": "Plant early",
+      "text": "Build a Greenhouse today. The first harvest takes 15 sols, so don't wait until food runs low.",
+      "done": { "type": "hasBuilding", "building": "greenhouse" },
+      "reward": { "metal": 15 },
+      "relatesTo": "food",
+      "why": "Crops take weeks to grow. Planning ahead is half of running a base."
+    },
+    {
+      "id": "power_positive",
+      "sol": 4,
+      "title": "Balance the power",
+      "text": "Make sure your base makes at least as much power as it uses.",
+      "done": { "type": "powerBalance", "min": 0 },
+      "reward": { "metal": 10 },
+      "relatesTo": "habitat_power",
+      "why": "Every system on Mars runs on power: air, water, heat and food."
+    },
+    {
+      "id": "find_water",
+      "sol": 5,
+      "title": "Find water",
+      "text": "Build an Ice Drill to dig up frozen water.",
+      "done": { "type": "hasBuilding", "building": "water_extractor" },
+      "reward": { "metal": 15 },
+      "relatesTo": "water",
+      "why": "Most water on Mars is frozen underground. Digging and heating it costs power."
+    },
+    {
+      "id": "clear_boulder",
+      "sol": 6,
+      "title": "Make room",
+      "text": "Send a rover to clear a boulder so you have more space to build.",
+      "done": { "type": "roverSent", "node": "boulder" },
+      "reward": { "metal": 5 },
+      "why": "Robots do the heavy work outside so astronauts spend less time exposed to radiation."
+    },
+    {
+      "id": "backup_power",
+      "sol": 7,
+      "title": "Back up your power",
+      "text": "Build a second Battery Bank to store spare power.",
+      "done": { "type": "hasBuilding", "building": "battery", "count": 2 },
+      "reward": { "metal": 10 },
+      "relatesTo": "habitat_power",
+      "why": "Batteries keep a base alive when solar power drops, like during a dust storm."
+    }
+  ],
+  "general": [
+    {
+      "id": "second_greenhouse",
+      "title": "More food",
+      "text": "One greenhouse can't feed a crew of 4. Build a second one.",
+      "done": { "type": "hasBuilding", "building": "greenhouse", "count": 2 },
+      "reward": { "metal": 15 },
+      "relatesTo": "food",
+      "why": "Each greenhouse feeds a bit over half the crew once its crops are ready."
+    },
+    {
+      "id": "recycle_water",
+      "title": "Stop wasting water",
+      "text": "Build a Water Recycler.",
+      "done": { "type": "hasBuilding", "building": "water_recycler" },
+      "reward": { "metal": 10 },
+      "relatesTo": "water",
+      "why": "The International Space Station recycles about 98% of its water."
+    },
+    {
+      "id": "second_rover",
+      "title": "Two rovers",
+      "text": "Build a Rover Bay so you can scavenge two places at once.",
+      "done": { "type": "hasBuilding", "building": "rover_bay" },
+      "reward": { "metal": 10 },
+      "why": "Robots extend what a small crew can do."
+    },
+    {
+      "id": "charge_batteries",
+      "title": "Charge up",
+      "text": "Get at least 60 kWh stored in your batteries.",
+      "done": { "type": "resourceAtLeast", "resource": "battery", "value": 60 },
+      "reward": { "metal": 10 },
+      "relatesTo": "habitat_power",
+      "why": "Stored power is your safety net."
+    },
+    {
+      "id": "stockpile_metal",
+      "title": "Spare parts",
+      "text": "Save up 80 metal for repairs and emergencies.",
+      "done": { "type": "resourceAtLeast", "resource": "metal", "value": 80 },
+      "reward": { "metal": 10 },
+      "why": "Real missions always keep spares. There's no hardware shop on Mars."
+    }
+  ]
+}

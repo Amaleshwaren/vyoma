@@ -1,0 +1,186 @@
+{
+  "_note": "Multipliers: 1.0 = average Mars. solarMult scales solar output, waterMult scales ice drill output, radiationMult scales daily dose, buildCostMult scales metal costs. startMetal is the cargo you land with. nodes = how many of each scavenge node spawn on open ground. boulderFraction = share of rough tiles that are clearable boulders (the rest are cliffs). eventWeights multiply how often each event type happens in this sector.",
+  "sectors": [
+    {
+      "id": "ice_basin",
+      "name": "Ice Basin",
+      "tagline": "Water everywhere, if you dig.",
+      "buildableFraction": 0.8,
+      "startMetal": 120,
+      "solarMult": 0.7,
+      "waterMult": 2.0,
+      "radiationMult": 0.85,
+      "buildCostMult": 1.0,
+      "groundColour": "#c98a6b",
+      "rockColour": "#dfe8f0",
+      "strengths": [
+        "Lots of buried ice",
+        "Thicker air overhead blocks some radiation"
+      ],
+      "scarcities": [
+        "Sunlight (far from the equator)"
+      ],
+      "risk": "Solar panels make less power here.",
+      "scienceNote": "NASA's Subsurface Water Ice Mapping project charts where ice hides just under the Martian surface. Low basins also have more air overhead, which blocks a little more radiation.",
+      "nodes": {
+        "meteorite": 6,
+        "lander_wreck": 1,
+        "hematite": 0
+      },
+      "boulderFraction": 0.5,
+      "eventWeights": {}
+    },
+    {
+      "id": "iron_ridge",
+      "name": "Iron Ridge",
+      "tagline": "Rich rock, rough ground.",
+      "buildableFraction": 0.45,
+      "startMetal": 120,
+      "solarMult": 1.0,
+      "waterMult": 0.6,
+      "radiationMult": 1.0,
+      "buildCostMult": 1.0,
+      "groundColour": "#a4532f",
+      "rockColour": "#4a4446",
+      "strengths": [
+        "Iron ore (hematite) to scavenge"
+      ],
+      "scarcities": [
+        "Water",
+        "Flat ground"
+      ],
+      "risk": "Lots of rough ground: clearing it takes time and power.",
+      "scienceNote": "Mars is red because its dust is full of iron oxide. NASA's Opportunity rover found fields of tiny hematite spheres, an iron-rich mineral nicknamed 'blueberries'.",
+      "nodes": {
+        "meteorite": 3,
+        "lander_wreck": 1,
+        "hematite": 6
+      },
+      "boulderFraction": 0.6,
+      "eventWeights": {
+        "equipment_failure": 2
+      }
+    },
+    {
+      "id": "sunny_highlands",
+      "name": "Sunny Highlands",
+      "tagline": "Best sunlight on Mars, thinnest shield.",
+      "buildableFraction": 0.9,
+      "startMetal": 120,
+      "solarMult": 1.3,
+      "waterMult": 0.5,
+      "radiationMult": 1.25,
+      "buildCostMult": 1.0,
+      "groundColour": "#d9934f",
+      "rockColour": "#8a5a3a",
+      "strengths": [
+        "Strong sunlight for solar panels",
+        "Plenty of flat ground"
+      ],
+      "scarcities": [
+        "Water"
+      ],
+      "risk": "High ground means thinner air above you and more radiation.",
+      "scienceNote": "Near the equator, solar panels get the most sunlight Mars has to offer, but Mars only receives about 43% of the sunlight Earth does. On high ground there's less atmosphere overhead to block radiation.",
+      "nodes": {
+        "meteorite": 6,
+        "lander_wreck": 1,
+        "hematite": 0
+      },
+      "boulderFraction": 0.5,
+      "eventWeights": {
+        "solar_particle_event": 1.5
+      }
+    },
+    {
+      "id": "lava_tube",
+      "name": "Lava Tube",
+      "tagline": "A natural bunker, but dark and cramped.",
+      "buildableFraction": 0.25,
+      "startMetal": 120,
+      "solarMult": 0.4,
+      "waterMult": 0.8,
+      "radiationMult": 0.15,
+      "buildCostMult": 1.0,
+      "groundColour": "#4b3b3a",
+      "rockColour": "#1f1a1c",
+      "strengths": [
+        "Metres of rock block most radiation"
+      ],
+      "scarcities": [
+        "Sunlight",
+        "Space"
+      ],
+      "risk": "Very little room, and almost no sunlight reaches inside.",
+      "scienceNote": "Lava tubes are caves left behind by ancient lava flows. The rock overhead would block most space radiation, which is why NASA scientists study them as possible shelters. Your map includes the surface around the cave entrance, where meteorites can still land.",
+      "nodes": {
+        "meteorite": 6,
+        "lander_wreck": 1,
+        "hematite": 0
+      },
+      "boulderFraction": 0.35,
+      "eventWeights": {
+        "dust_storm": 0.5
+      }
+    },
+    {
+      "id": "crater_rim",
+      "name": "Crater Rim",
+      "tagline": "A bit of everything, nothing easy.",
+      "buildableFraction": 0.65,
+      "startMetal": 120,
+      "solarMult": 1.0,
+      "waterMult": 1.0,
+      "radiationMult": 1.0,
+      "buildCostMult": 1.2,
+      "groundColour": "#b5683f",
+      "rockColour": "#6e4430",
+      "strengths": [
+        "Balanced sunlight, water and radiation"
+      ],
+      "scarcities": [
+        "Nothing in particular"
+      ],
+      "risk": "Slopes make every building cost 20% more metal.",
+      "scienceNote": "Crater walls expose layers of rock that record the history of Mars, which is why rovers like Curiosity explore them. The slopes make building harder.",
+      "nodes": {
+        "meteorite": 6,
+        "lander_wreck": 1,
+        "hematite": 0
+      },
+      "boulderFraction": 0.5,
+      "eventWeights": {}
+    },
+    {
+      "id": "dust_flats",
+      "name": "Dust Flats",
+      "tagline": "Wide open, and very dusty.",
+      "buildableFraction": 0.95,
+      "startMetal": 120,
+      "solarMult": 0.85,
+      "waterMult": 0.6,
+      "radiationMult": 1.0,
+      "buildCostMult": 1.0,
+      "groundColour": "#c7865a",
+      "rockColour": "#9a6a4a",
+      "strengths": [
+        "The most flat ground to build on"
+      ],
+      "scarcities": [
+        "Water",
+        "Clean solar panels"
+      ],
+      "risk": "Dust settles on solar panels and storms block the Sun.",
+      "scienceNote": "Dust is the enemy of solar power on Mars. Dust on its panels ended NASA's InSight lander in 2022, and a planet-wide dust storm ended the Opportunity rover in 2018.",
+      "nodes": {
+        "meteorite": 5,
+        "lander_wreck": 1,
+        "hematite": 0
+      },
+      "boulderFraction": 0.6,
+      "eventWeights": {
+        "dust_storm": 2.5
+      }
+    }
+  ]
+}

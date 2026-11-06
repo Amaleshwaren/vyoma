@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Vyoma: Mars Outpost Trainer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Saira+Condensed:wght@600;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="game"></div>
+
+    <!-- in-game HUD -->
+    <div id="hud" class="hidden">
+      <header id="topbar">
+        <div class="sol-box">
+          <div id="sector-name"></div>
+          <div id="sol"></div>
+          <div id="clock" title="Mars time. A sol (a Mars day) lasts 24 h 39 min 35 s, so mission teams split it into 24 Mars hours of about 61.6 Earth minutes each.">00:00</div>
+        </div>
+        <div id="stats"></div>
+        <div id="controls"></div>
+      </header>
+      <p id="phase-hint" class="hidden"></p>
+      <div id="event-banner" class="hidden"></div>
+      <div id="side">
+        <section id="task-panel"></section>
+        <aside id="info" class="hidden"></aside>
+      </div>
+      <div id="toasts"></div>
+      <div id="placing" class="hidden">
+        <span id="placing-text"></span>
+        <button id="placing-done">Done</button>
+      </div>
+      <footer id="actions">
+        <button id="demolish-btn">🧹 Demolish</button>
+        <button id="build-btn" class="primary">🏗️ Build</button>
+      </footer>
+    </div>
+
+    <!-- build shop: opened with the Build button -->
+    <div id="shop" class="overlay hidden">
+      <div class="panel shop-panel">
+        <div class="shop-head">
+          <h1>Build</h1>
+          <button id="shop-close" aria-label="Close">✕</button>
+        </div>
+        <div id="shop-grid"></div>
+      </div>
+    </div>
+
+    <!-- mars event decision card: shown after the sol report when an event happens -->
+    <div id="decision" class="overlay hidden">
+      <div class="panel decision-panel">
+        <h1 id="decision-title"></h1>
+        <p id="decision-warning" class="decision-warning"></p>
+        <div id="decision-choices"></div>
+        <div class="lesson">
+          <h2>This really happened</h2>
+          <p id="decision-story"></p>
+        </div>
+        <p id="decision-science" class="science"></p>
+      </div>
+    </div>
+
+    <!-- daily report: shown at the end of every sol -->
+    <div id="report" class="overlay hidden">
+      <div class="panel">
+        <h1 id="report-title"></h1>
+        <div id="report-body"></div>
+        <div class="row">
+          <button id="report-start" class="primary"></button>
+          <button id="report-plan">Plan first</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- sector picker (designer art goes here later) -->
+    <div id="sector-picker" class="overlay">
+      <div class="panel">
+        <h1>Choose your landing sector</h1>
+        <div id="sector-grid"></div>
+        <div id="sector-detail"><p class="muted">Pick a sector to see what you're getting into.</p></div>
+        <label class="tutorial-toggle"><input type="checkbox" id="tutorial-toggle" /> Show the commander's tutorial</label>
+        <button id="land-btn" class="primary" disabled>Land here</button>
+      </div>
+    </div>
+
+    <!-- mission debrief -->
+    <div id="debrief" class="overlay hidden">
+      <div id="debrief-panel" class="panel">
+        <h1 id="debrief-headline"></h1>
+        <ul id="debrief-lines"></ul>
+        <div class="lesson">
+          <h2>The real science</h2>
+          <p id="debrief-lesson"></p>
+        </div>
+        <div class="row">
+          <button id="retry-btn" class="primary">Try again</button>
+          <button id="change-sector-btn">Choose another sector</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- commander tutorial: spotlight + speech bubble (on top of everything) -->
+    <div id="spotlight" class="hidden"></div>
+    <div id="commander" class="hidden">
+      <div id="cmd-portrait"></div>
+      <div class="cmd-body">
+        <div id="cmd-name"></div>
+        <p id="cmd-text"></p>
+        <div class="row">
+          <button id="cmd-next" class="primary"></button>
+          <button id="cmd-skip">Skip tutorial</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

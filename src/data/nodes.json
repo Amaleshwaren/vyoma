@@ -1,0 +1,58 @@
+{
+  "_note": "Things rovers can scavenge. workHours = Mars hours working on site per trip. loads = trips before it's used up; yield is per trip. clearsTile = the tile becomes buildable afterwards. Metal and regolith are scavenged on purpose: oxygen, water and food come from buildings.",
+  "nodes": [
+    {
+      "id": "meteorite",
+      "name": "Iron Meteorite",
+      "yield": {
+        "metal": 15
+      },
+      "colour": "#5d5f6b",
+      "showIcon": true,
+      "description": "A chunk of iron and nickel from space, lying on the surface.",
+      "scienceNote": "Iron meteorites are tough enough to survive the fall through Mars's thin air. NASA's Opportunity rover found one in 2005, the first meteorite ever identified on another planet.",
+      "workHours": 1,
+      "loads": 1
+    },
+    {
+      "id": "lander_wreck",
+      "name": "Lander Wreckage",
+      "yield": {
+        "metal": 25
+      },
+      "colour": "#b8bcc4",
+      "showIcon": true,
+      "description": "Leftover hardware from your own landing.",
+      "scienceNote": "Every Mars landing leaves hardware behind: heat shield, parachute, back shell and descent stage. Reusing it saves shipping new metal all the way from Earth.",
+      "workHours": 2,
+      "loads": 2
+    },
+    {
+      "id": "hematite",
+      "name": "Iron Ore (Hematite)",
+      "yield": {
+        "metal": 10
+      },
+      "colour": "#6b3a3a",
+      "showIcon": true,
+      "description": "Iron-rich rock. Takes a while to process into usable metal.",
+      "scienceNote": "Hematite is an iron oxide mineral. Turning ore into metal takes much more work than grabbing a meteorite that's already metal.",
+      "workHours": 2,
+      "loads": 4
+    },
+    {
+      "id": "boulder",
+      "name": "Boulder",
+      "yield": {
+        "regolith": 10
+      },
+      "clearsTile": true,
+      "colour": "#7a5a48",
+      "showIcon": false,
+      "description": "Clear it to make room, and bring back broken rock as regolith for radiation shielding.",
+      "scienceNote": "Robots clear rocks so astronauts spend less time outside, where they'd soak up more radiation.",
+      "workHours": 2,
+      "loads": 1
+    }
+  ]
+}

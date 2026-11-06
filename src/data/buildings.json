@@ -1,0 +1,203 @@
+{
+  "_note": "Power is in kWh per sol (averaged over day and night). powerIn = uses, powerOut = makes. priority decides who keeps power in a shortage (higher stays on). produces/consumes are kg per sol. Power and output numbers are game balance unless a scienceNote says otherwise. size = footprint in tiles [width, height]. cropDiesAfter = sols in a row without power or water before a greenhouse crop dies (one bad sol just pauses growth). Greenhouse priority is above the water systems: crops die without power, a water tank just drains a bit.",
+  "buildings": [
+    {
+      "id": "habitat",
+      "name": "Habitat",
+      "icon": "🏠",
+      "buildable": false,
+      "cost": {
+        "metal": 0
+      },
+      "powerIn": 48,
+      "priority": 100,
+      "height": 26,
+      "colour": "#e8e2d6",
+      "description": "Home for your crew. Keeps them warm, pressurised and alive.",
+      "scienceNote": "Mars nights can drop below -80 °C, so heating alone uses a lot of power.",
+      "size": [
+        3,
+        3
+      ]
+    },
+    {
+      "id": "solar_array",
+      "name": "Solar Array",
+      "icon": "☀️",
+      "cost": {
+        "metal": 8
+      },
+      "powerOut": 40,
+      "solar": true,
+      "height": 6,
+      "colour": "#3a5fcd",
+      "description": "Makes power from sunlight. How much depends on your landing sector.",
+      "scienceNote": "Mars gets about 43% of the sunlight Earth does, and dust on the panels cuts that further.",
+      "size": [
+        2,
+        2
+      ]
+    },
+    {
+      "id": "battery",
+      "name": "Battery Bank",
+      "icon": "🔋",
+      "cost": {
+        "metal": 15
+      },
+      "batteryCapacity": 80,
+      "height": 14,
+      "colour": "#6b8f71",
+      "description": "Stores spare power so the base keeps running when production drops.",
+      "scienceNote": "Mars rovers use batteries to survive the freezing nights when their solar panels make nothing.",
+      "size": [
+        1,
+        1
+      ]
+    },
+    {
+      "id": "fission_reactor",
+      "name": "Fission Reactor",
+      "icon": "⚛️",
+      "cost": {
+        "metal": 100
+      },
+      "powerOut": 246,
+      "maxCount": 1,
+      "height": 30,
+      "colour": "#9aa3ad",
+      "description": "Steady power day and night, in any weather. Very expensive.",
+      "scienceNote": "NASA tested a small fission reactor design called Kilopower in 2018. A 10-kilowatt unit like this makes about 246 kWh every sol, sun or no sun.",
+      "size": [
+        2,
+        2
+      ]
+    },
+    {
+      "id": "oxygen_plant",
+      "name": "Oxygen Plant",
+      "icon": "💨",
+      "cost": {
+        "metal": 30
+      },
+      "powerIn": 60,
+      "priority": 90,
+      "produces": {
+        "oxygen": 4
+      },
+      "height": 18,
+      "colour": "#7fc8e8",
+      "description": "Pulls carbon dioxide from the Martian air and turns it into breathable oxygen.",
+      "scienceNote": "NASA's MOXIE experiment on the Perseverance rover proved this works on Mars, making 122 grams of oxygen between 2021 and 2023.",
+      "size": [
+        2,
+        2
+      ]
+    },
+    {
+      "id": "water_extractor",
+      "name": "Ice Drill",
+      "icon": "⛏️",
+      "cost": {
+        "metal": 25
+      },
+      "powerIn": 40,
+      "priority": 60,
+      "produces": {
+        "water": 20
+      },
+      "usesSectorWater": true,
+      "height": 20,
+      "colour": "#5b8fb0",
+      "description": "Digs up icy soil and heats it to release water. Works best where there's lots of ice.",
+      "scienceNote": "Most water on Mars is frozen in the ground or in the polar ice caps.",
+      "size": [
+        2,
+        2
+      ]
+    },
+    {
+      "id": "water_recycler",
+      "name": "Water Recycler",
+      "icon": "♻️",
+      "cost": {
+        "metal": 30
+      },
+      "powerIn": 30,
+      "priority": 70,
+      "waterRecovery": 0.9,
+      "maxCount": 1,
+      "height": 16,
+      "colour": "#4fb3a6",
+      "description": "Cleans used water so the crew can drink it again.",
+      "scienceNote": "The International Space Station recycles about 98% of its water, including sweat and urine.",
+      "size": [
+        2,
+        2
+      ]
+    },
+    {
+      "id": "greenhouse",
+      "name": "Greenhouse",
+      "icon": "🥬",
+      "cost": {
+        "metal": 35
+      },
+      "powerIn": 70,
+      "priority": 75,
+      "consumes": {
+        "water": 5
+      },
+      "produces": {
+        "food": 4.5,
+        "oxygen": 0.5
+      },
+      "growSols": 15,
+      "height": 16,
+      "colour": "#7bc96f",
+      "description": "Grows food under lights. Plants also make a little oxygen while they grow.",
+      "scienceNote": "Plants need light, warmth and water. On Mars, sunlight is weak and nights are freezing, so greenhouses use a lot of power.",
+      "size": [
+        3,
+        2
+      ],
+      "cropDiesAfter": 2
+    },
+    {
+      "id": "rover_bay",
+      "name": "Rover Bay",
+      "icon": "🚙",
+      "cost": {
+        "metal": 40
+      },
+      "addsRover": 1,
+      "maxCount": 2,
+      "height": 12,
+      "colour": "#d98b3a",
+      "description": "Adds one more rover, so you can scavenge two places at once.",
+      "scienceNote": "Radio signals take roughly 3 to 22 minutes to travel between Earth and Mars, so Mars rovers have to handle a lot of driving on their own.",
+      "size": [
+        2,
+        2
+      ]
+    },
+    {
+      "id": "storm_shelter",
+      "name": "Storm Shelter",
+      "icon": "🛡️",
+      "cost": {
+        "metal": 40,
+        "regolith": 40
+      },
+      "size": [
+        2,
+        2
+      ],
+      "maxCount": 1,
+      "height": 10,
+      "colour": "#8c7b6b",
+      "description": "A small room buried under regolith. The crew hides here when a solar storm hits.",
+      "scienceNote": "Thick soil, rock and water block solar storm particles well. On the space station, crews shelter in the best-shielded modules."
+    }
+  ]
+}

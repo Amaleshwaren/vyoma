@@ -1,0 +1,73 @@
+{
+  "_note": "All tunable numbers. Fields starting with _ are notes for humans and are ignored by the game. Values marked REAL come from NASA data; everything else is game balance and can be tweaked freely.",
+  "mission": {
+    "lengthSols": 30,
+    "crew": 4,
+    "msPerSol": 60000,
+    "fastForwardMs": 2500,
+    "_msPerSol": "Real time a sol takes when left running. 'End sol' fast-forwards the rest in fastForwardMs."
+  },
+  "grid": {
+    "size": 24,
+    "jitter": 3.5,
+    "_jitter": "How ragged the edge of the buildable area is. 0 = perfect circle."
+  },
+  "start": {
+    "oxygen": 60,
+    "water": 400,
+    "food": 200,
+    "_start": "Supplies landed with the crew, in kg (battery in kWh). buildings = free starter kit next to the habitat. Metal comes from the sector's cargo plus scavenging.",
+    "battery": 80,
+    "buildings": [
+      {
+        "type": "solar_array",
+        "count": 2
+      },
+      {
+        "type": "battery",
+        "count": 1
+      }
+    ],
+    "regolith": 0
+  },
+  "crewPerSol": {
+    "oxygen": 0.84,
+    "water": 3.5,
+    "food": 1.8,
+    "_oxygen": "REAL: NASA life support baseline, about 0.84 kg O2 per person per day.",
+    "_water": "APPROX: drinking + food prep only, no showers. Verify against NASA BVAD before demo.",
+    "_food": "APPROX: packaged food mass per person per day. Verify against NASA BVAD before demo."
+  },
+  "radiation": {
+    "baseMsvPerSol": 0.64,
+    "doseBudgetMsv": 100,
+    "_baseMsvPerSol": "REAL: Curiosity RAD measured ~0.64 mSv/day on the surface (Hassler et al., Science, 2014).",
+    "_doseBudgetMsv": "GAME RULE: share of NASA's 600 mSv career limit given to this surface stay.",
+    "shielding": {
+      "max": 3,
+      "cost": 30,
+      "speCut": 0.25,
+      "gcrCut": 0.05,
+      "_shielding": "Each level of regolith on the habitat cuts solar strom dose by 25% bu everyday cosmic-ray dose by only 5%. That matches reality: cosmix rays are very hard to block."
+    }
+  },
+  "failure": {
+    "habitatWindowSols": 5,
+    "habitatUnpoweredLimit": 2,
+    "_failure": "Mission fails if the habitat had no power on 2 of the last 5 sols. One bad sol is survivable, repeated ones aren't."
+  },
+  "demolishRefund": 0.5,
+  "rover": {
+    "start": 1,
+    "speedTilesPerHour": 6,
+    "kWhPerHour": 4,
+    "_rover": "Trips are timed in Mars hours (1/24 of a sol). Each trip takes its energy from the battery when the rover leaves: no charge, no trip."
+  },
+  "discovery": {
+    "everyHours": 12,
+    "minDistance": 5,
+    "type": "meteorite",
+    "maxActive": 4,
+    "_discovery": "Every everyHours Mars hours, rovers spot a new meteorite at least minDistance tiles from the habitat. Skipped if maxActive unclaimed metal nodes already exist."
+  }
+}

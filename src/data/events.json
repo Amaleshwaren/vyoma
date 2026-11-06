@@ -1,0 +1,147 @@
+{
+  "_note": "Mars events. Each sol from schedule.firstSol there's a chance of one event, rising every sol (escalation). Every event pauses the game with a decision card. Numbers marked GAME are balance; realStory lines are real and fact-checked. {braces} are filled in by the game.",
+  "schedule": {
+    "firstSol": 4,
+    "minGapSols": 3,
+    "baseChance": 0.15,
+    "chancePerSol": 0.015,
+    "maxChance": 0.4
+  },
+  "events": [
+    {
+      "id": "dust_storm",
+      "name": "Dust storm",
+      "icon": "🌪️",
+      "weight": 2,
+      "warning": "Orbiters have spotted a dust storm heading your way. It arrives tomorrow and could last several sols.",
+      "durationSols": [
+        2,
+        4
+      ],
+      "solarMult": 0.5,
+      "dustAfter": 0.2,
+      "dustRecoverPerSol": 0.04,
+      "_numbers": "GAME: a regional storm halves solar output (global storms like 2018's are far darker but rare). After it, panels stay 20% dusty and slowly clear (real wind gusts clean panels too).",
+      "choices": [
+        {
+          "id": "shut_greenhouse",
+          "label": "Switch off the greenhouses",
+          "detail": "Saves their power during the storm, but the crops die and have to regrow.",
+          "effect": {
+            "switchOff": "greenhouse"
+          }
+        },
+        {
+          "id": "shut_drill",
+          "label": "Switch off the ice drills",
+          "detail": "Saves their power during the storm. The crew drinks from stored water.",
+          "effect": {
+            "switchOff": "water_extractor"
+          }
+        },
+        {
+          "id": "ride_out",
+          "label": "Ride it out",
+          "detail": "Keep everything on. If power runs short, the least important systems switch off by themselves.",
+          "effect": {}
+        }
+      ],
+      "realStory": "In June 2018, a planet-wide dust storm blocked the Sun over NASA's Opportunity rover. Its solar panels couldn't recharge its batteries and it never woke up again. The nuclear-powered Curiosity rover kept working through the same storm.",
+      "science": "Mars air is too thin for storms to blow a base over. The real danger is losing sunlight for days.",
+      "debrief": "A dust storm on sols {from} to {to} cut your solar power to {pct}%."
+    },
+    {
+      "id": "solar_particle_event",
+      "name": "Solar particle event",
+      "icon": "☢️",
+      "weight": 2,
+      "warning": "Space weather forecasters have spotted a huge solar flare. A burst of radiation will reach Mars within hours.",
+      "doseMsv": 30,
+      "_numbers": "GAME: 30 mSv for an unshielded crew in an average sector, scaled by the sector's radiation.",
+      "choices": [
+        {
+          "id": "shelter",
+          "label": "Crew into the storm shelter",
+          "detail": "Blocks about 90% of the burst.",
+          "requires": {
+            "building": "storm_shelter"
+          },
+          "effect": {
+            "doseMult": 0.1
+          }
+        },
+        {
+          "id": "pile_regolith",
+          "label": "Pile regolith on the habitat now",
+          "detail": "Costs {cost} regolith. Adds a permanent layer of shielding before the burst hits.",
+          "requires": {
+            "regolith": "shieldingCost"
+          },
+          "effect": {
+            "addShielding": 1
+          }
+        },
+        {
+          "id": "take_it",
+          "label": "Stay put and take the dose",
+          "detail": "Costs nothing now, but the crew's radiation dose goes up by about {dose} mSv.",
+          "effect": {}
+        }
+      ],
+      "realStory": "During the huge 'Halloween' solar storms of 2003, astronauts on the International Space Station took shelter in the Zvezda module, one of the best-shielded parts of the station.",
+      "science": "Solar storms are much easier to block than everyday cosmic rays. Rock, soil and water all make good shields.",
+      "debrief": "A solar particle event on sol {sol} gave the crew {dose} mSv."
+    },
+    {
+      "id": "equipment_failure",
+      "name": "Equipment failure",
+      "icon": "🔧",
+      "weight": 2,
+      "targets": [
+        "oxygen_plant",
+        "water_extractor",
+        "water_recycler",
+        "greenhouse",
+        "solar_array"
+      ],
+      "warning": "Alarm! Your {building} has broken down and stopped working.",
+      "repairNowFraction": 0.5,
+      "repairSlowFraction": 0.2,
+      "slowSols": 2,
+      "_numbers": "GAME: repairing now costs 50% of the building's metal, slowly costs 20% and takes 2 sols.",
+      "choices": [
+        {
+          "id": "repair_now",
+          "label": "Repair it now",
+          "detail": "Costs {repairNow} metal. Working again straight away.",
+          "requires": {
+            "metal": "repairNow"
+          },
+          "effect": {
+            "repair": "now"
+          }
+        },
+        {
+          "id": "repair_slow",
+          "label": "Repair it slowly",
+          "detail": "Costs {repairSlow} metal. Working again in {slowSols} sols.",
+          "requires": {
+            "metal": "repairSlow"
+          },
+          "effect": {
+            "repair": "slow"
+          }
+        },
+        {
+          "id": "leave",
+          "label": "Leave it for now",
+          "detail": "Free, but it stays broken. You can repair it later from its info card.",
+          "effect": {}
+        }
+      ],
+      "realStory": "In 2004 the space station's main oxygen generator, Elektron, broke down several times. The crew kept breathing by burning 'oxygen candles' (each gives one person a day of oxygen) while they fixed it.",
+      "science": "Machines break, especially far from home. Spare parts and a second machine (redundancy) keep crews alive.",
+      "debrief": "Your {building} broke down on sol {sol}."
+    }
+  ]
+}
