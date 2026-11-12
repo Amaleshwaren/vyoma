@@ -1,19 +1,19 @@
 {
   "_note": "The commander's tutorial. Steps run in order on sol 1. 'until' = what the player must do to move on (or 'next': true for a Next button). 'skipIf' = skip the step if already true. 'target' = CSS selector to spotlight (null = the map). Portraits: an emoji placeholder for now; replace with an image path like 'assets/commander-happy.png' when the art is ready.",
   "commander": {
-    "name": "Commander Nova",
+    "name": "Commander Avinesh",
     "portraits": {
-      "neutral": "👩‍🚀",
-      "happy": "👩‍🚀",
-      "worried": "👩‍🚀",
-      "pointing": "👩‍🚀"
+      "neutral": "art/commander/normal.webp",
+      "happy": "art/commander/happy.webp",
+      "worried": "art/commander/thinking.webp",
+      "pointing": "art/commander/normal.webp"
     }
   },
   "steps": [
     {
       "id": "hello",
       "mood": "happy",
-      "text": "Welcome to Mars! I'm Commander Nova. Our crew of 4 just landed, and keeping them alive is your job. I'll show you the basics.",
+      "text": "Welcome to Mars! I'm Commander Avinesh. Our crew of 4 just landed, and keeping them alive is your job. I'll show you the basics.",
       "next": true
     },
     {
@@ -55,7 +55,7 @@
       "id": "power",
       "mood": "worried",
       "target": "[data-chip=power]",
-      "text": "Uh oh, the Oxygen Plant uses a lot of power and our Power number is negative. Build Solar Arrays until it's positive.",
+      "text": "Uh oh, the Oxygen Plant uses a lot of power and our Power number is negative. Tap Build and add power: Solar Arrays where the Sun is strong, a Fission Reactor where it's weak. You can also fix it later.",
       "skipIf": { "type": "power", "min": 0 },
       "until": { "type": "power", "min": 0 }
     },

@@ -605,50 +605,86 @@ button.primary {
   z-index: 200;
   left: 12px;
   bottom: 12px;
-  width: min(440px, calc(100vw - 24px));
+  width: min(580px, calc(100vw - 24px));
   display: flex;
-  gap: 12px;
-  align-items: flex-start;
-  background: var(--panel);
-  border: 2px solid var(--sky);
-  border-radius: 18px;
-  padding: 14px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+  align-items: flex-end;
+  pointer-events: none; /* only the board and its buttons catch taps */
 }
 #cmd-portrait {
-  flex: 0 0 76px;
-  height: 76px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  font-size: 2.6rem;
-  background: #17304a;
-  border: 3px solid var(--sky);
-  overflow: hidden;
+  flex: 0 0 auto;
+  width: 130px;
+  height: 260px;
+  margin-right: -56px; /* the commander stands in front of the board and its name tab */
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  font-size: 3rem; /* emoji fallback */
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.5));
 }
 #cmd-portrait img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: bottom;
 }
-#cmd-portrait.mood-happy {
-  border-color: var(--ok);
-}
-#cmd-portrait.mood-worried {
-  border-color: var(--bad);
-}
-#cmd-portrait.mood-pointing {
-  border-color: var(--warn);
+/* the board: the designer's text board rebuilt in CSS so it stretches to fit any amount of text */
+.cmd-body {
+  pointer-events: auto;
+  position: relative;
+  flex: 1;
+  margin-top: 30px; /* room for the name tab */
+  padding: 14px 16px 12px 64px;
+  color: #0b2440;
+  background: linear-gradient(115deg, #5fe6fd 0%, #5fe6fd 40%, #79ecff 47%, #5fe6fd 54%, #5fe6fd 100%);
+  border: 5px solid #6c9dcd;
+  border-radius: 3px;
+  box-shadow:
+    inset 0 0 0 2px #4b79ab,
+    inset 0 0 14px rgba(255, 255, 255, 0.7),
+    0 0 0 4px #d8f1fc,
+    0 10px 30px rgba(0, 0, 0, 0.5);
 }
 #cmd-name {
+  position: absolute;
+  left: 20px;
+  top: -34px;
+  padding: 3px 34px 3px 52px;
+  background: #6c9dcd;
+  clip-path: polygon(14px 0, calc(100% - 26px) 0, 100% 100%, 0 100%, 0 14px);
   font-family: var(--display);
   font-weight: 800;
-  font-size: 1.15rem;
-  color: var(--sky);
+  font-size: 1.2rem;
+  letter-spacing: 0.03em;
+  color: #fff;
 }
 #cmd-text {
-  margin: 4px 0 10px;
+  margin: 0 0 10px;
+  font-size: 1.02rem;
   line-height: 1.4;
+  font-weight: 700;
+}
+.cmd-body button:not(.primary) {
+  background: #2c5a8a;
+  border-color: #2c5a8a;
+  color: #fff;
+}
+body.tutorial-on #placing {
+  bottom: 300px; /* sit above the commander so Cancel is never hidden */
+}
+@media (max-width: 600px) {
+  #cmd-portrait {
+    width: 110px;
+    height: 180px;
+    margin-right: -36px;
+  }
+  .cmd-body {
+    padding-left: 44px;
+  }
+  #cmd-name {
+    padding-left: 34px;
+  }
 }
 
 .tutorial-toggle {
