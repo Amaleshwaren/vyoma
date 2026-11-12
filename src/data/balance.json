@@ -14,7 +14,7 @@
   },
   "start": {
     "oxygen": 60,
-    "water": 400,
+    "water": 360,
     "food": 200,
     "_start": "Supplies landed with the crew, in kg (battery in kWh). buildings = free starter kit next to the habitat. Metal comes from the sector's cargo plus scavenging.",
     "battery": 80,
@@ -31,12 +31,12 @@
     "regolith": 0
   },
   "crewPerSol": {
-    "oxygen": 0.84,
-    "water": 3.5,
+    "oxygen": 0.82,
+    "water": 3.2,
     "food": 1.8,
-    "_oxygen": "REAL: NASA life support baseline, about 0.84 kg O2 per person per day.",
-    "_water": "APPROX: drinking + food prep only, no showers. Verify against NASA BVAD before demo.",
-    "_food": "APPROX: packaged food mass per person per day. Verify against NASA BVAD before demo."
+    "_oxygen": "REAL: NASA Life Support Baseline Values and Assumptions Document (BVAD, Anderson et al. 2018): 0.82 kg O2 per person per day.",
+    "_water": "REAL: BVAD/NASA HIDH daily water: drinking 2.0 + food rehydration 0.5 + hygiene 0.4 + flush 0.25 + medical 0.05 = 3.2 kg per person. No showers or laundry.",
+    "_food": "REAL: BVAD food supply is about 1.83 kg per person per day, including packaging."
   },
   "radiation": {
     "baseMsvPerSol": 0.64,
@@ -48,7 +48,7 @@
       "cost": 30,
       "speCut": 0.25,
       "gcrCut": 0.05,
-      "_shielding": "Each level of regolith on the habitat cuts solar storm dose by 25% bu everyday cosmic-ray dose by only 5%. That matches reality: cosmic rays are very hard to block."
+      "_shielding": "Each level of regolith on the habitat cuts solar storm dose by 25% but everyday cosmic-ray dose by only 5%. That matches reality: cosmic rays are very hard to block."
     }
   },
   "failure": {

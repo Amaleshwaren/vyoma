@@ -130,7 +130,7 @@
       "height": 16,
       "colour": "#4fb3a6",
       "description": "Cleans used water so the crew can drink it again.",
-      "scienceNote": "The International Space Station recycles about 98% of its water, including sweat and urine.",
+      "scienceNote": "The International Space Station recycles water from sweat and urine. It only reached 98% in 2023 after years of upgrades, so your first recycler starts lower.",
       "size": [
         2,
         2

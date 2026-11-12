@@ -1,27 +1,27 @@
 {
-  "_note": "Multipliers: 1.0 = average Mars. solarMult scales solar output, waterMult scales ice drill output, radiationMult scales daily dose, buildCostMult scales metal costs. startMetal is the cargo you land with. nodes = how many of each scavenge node spawn on open ground. boulderFraction = share of rough tiles that are clearable boulders (the rest are cliffs). eventWeights multiply how often each event type happens in this sector.",
+  "_note": "Multipliers: 1.0 = average Mars (for radiation: what Curiosity measured in Gale Crater). realPlace = the real Mars region each sector is based on. solarMult scales solar output, waterMult scales ice drill output, radiationMult scales daily dose, buildCostMult scales metal costs. startMetal is the cargo you land with. nodes = how many of each scavenge node spawn on open ground. boulderFraction = share of rough tiles that are clearable boulders (the rest are cliffs). eventWeights multiply how often each event type happens in this sector.",
   "sectors": [
     {
       "id": "ice_basin",
       "name": "Ice Basin",
+      "realPlace": "Arcadia Planitia",
       "tagline": "Water everywhere, if you dig.",
       "buildableFraction": 0.8,
       "startMetal": 120,
       "solarMult": 0.7,
       "waterMult": 2.0,
-      "radiationMult": 0.85,
+      "radiationMult": 1.0,
       "buildCostMult": 1.0,
       "groundColour": "#c98a6b",
       "rockColour": "#dfe8f0",
       "strengths": [
-        "Lots of buried ice",
-        "Thicker air overhead blocks some radiation"
+        "Lots of buried ice"
       ],
       "scarcities": [
         "Sunlight (far from the equator)"
       ],
       "risk": "Solar panels make less power here.",
-      "scienceNote": "NASA's Subsurface Water Ice Mapping project charts where ice hides just under the Martian surface. Low basins also have more air overhead, which blocks a little more radiation.",
+      "scienceNote": "NASA's Subsurface Water Ice Mapping project charts where ice hides just under the Martian surface. Arcadia Planitia, a northern lowland, is one of the best spots, but it's far from the equator, so sunlight is weaker.",
       "nodes": {
         "meteorite": 6,
         "lander_wreck": 1,
@@ -32,8 +32,9 @@
     },
     {
       "id": "iron_ridge",
-      "name": "Iron Ridge",
-      "tagline": "Rich rock, rough ground.",
+      "name": "Iron Fields",
+      "realPlace": "Meridiani Planum",
+      "tagline": "Iron in the dirt, craters everywhere.",
       "buildableFraction": 0.45,
       "startMetal": 120,
       "solarMult": 1.0,
@@ -47,10 +48,10 @@
       ],
       "scarcities": [
         "Water",
-        "Flat ground"
+        "Open ground (craters everywhere)"
       ],
-      "risk": "Lots of rough ground: clearing it takes time and power.",
-      "scienceNote": "Mars is red because its dust is full of iron oxide. NASA's Opportunity rover found fields of tiny hematite spheres, an iron-rich mineral nicknamed 'blueberries'.",
+      "risk": "Craters and rocky outcrops leave little open ground: clearing it takes time and power.",
+      "scienceNote": "Mars is red because its dust is full of iron oxide. At Meridiani Planum, NASA's Opportunity rover found fields of tiny hematite spheres nicknamed 'blueberries'. Hematite like this forms in water, so it showed Mars was once wet. It shows there's iron here, not a proven mine.",
       "nodes": {
         "meteorite": 3,
         "lander_wreck": 1,
@@ -63,13 +64,14 @@
     },
     {
       "id": "sunny_highlands",
-      "name": "Sunny Highlands",
-      "tagline": "Best sunlight on Mars, thinnest shield.",
+      "name": "Sunny Plains",
+      "realPlace": "Elysium Planitia",
+      "tagline": "Best sunlight on Mars, until the dust settles.",
       "buildableFraction": 0.9,
       "startMetal": 120,
       "solarMult": 1.3,
       "waterMult": 0.5,
-      "radiationMult": 1.25,
+      "radiationMult": 1.0,
       "buildCostMult": 1.0,
       "groundColour": "#d9934f",
       "rockColour": "#8a5a3a",
@@ -78,23 +80,22 @@
         "Plenty of flat ground"
       ],
       "scarcities": [
-        "Water"
+        "Water (little ice this close to the equator)"
       ],
-      "risk": "High ground means thinner air above you and more radiation.",
-      "scienceNote": "Near the equator, solar panels get the most sunlight Mars has to offer, but Mars only receives about 43% of the sunlight Earth does. On high ground there's less atmosphere overhead to block radiation.",
+      "risk": "Dust storms dim your panels, and the dust stays on them for days afterwards.",
+      "scienceNote": "Near the equator, solar panels get the most sunlight Mars has to offer, but Mars only receives about 43% of the sunlight Earth does.  NASA's InSight lander chose this flat, sunny plain in 2018. Four years later, dust on its solar panels ended the mission.",
       "nodes": {
         "meteorite": 6,
         "lander_wreck": 1,
         "hematite": 0
       },
       "boulderFraction": 0.5,
-      "eventWeights": {
-        "solar_particle_event": 1.5
-      }
+      "eventWeights": {}
     },
     {
       "id": "lava_tube",
       "name": "Lava Tube",
+      "realPlace": "Tharsis volcanic region",
       "tagline": "A natural bunker, but dark and cramped.",
       "buildableFraction": 0.25,
       "startMetal": 120,
@@ -112,7 +113,7 @@
         "Space"
       ],
       "risk": "Very little room, and almost no sunlight reaches inside.",
-      "scienceNote": "Lava tubes are caves left behind by ancient lava flows. The rock overhead would block most space radiation, which is why NASA scientists study them as possible shelters. Your map includes the surface around the cave entrance, where meteorites can still land.",
+      "scienceNote": "Lava tubes are caves left behind by ancient lava flows. The rock overhead would block most space radiation, which is why NASA scientists study them as possible shelters. None has been explored up close, so none is confirmed safe yet. Orbiters have spotted possible cave openings on Arsia Mons, a Tharsis volcano. Your map includes the surface around the cave entrance, where meteorites can still land.",
       "nodes": {
         "meteorite": 6,
         "lander_wreck": 1,
@@ -126,6 +127,7 @@
     {
       "id": "crater_rim",
       "name": "Crater Rim",
+      "realPlace": "Gale Crater",
       "tagline": "A bit of everything, nothing easy.",
       "buildableFraction": 0.65,
       "startMetal": 120,
@@ -142,7 +144,7 @@
         "Nothing in particular"
       ],
       "risk": "Slopes make every building cost 20% more metal.",
-      "scienceNote": "Crater walls expose layers of rock that record the history of Mars, which is why rovers like Curiosity explore them. The slopes make building harder.",
+      "scienceNote": "NASA's Curiosity rover has explored Gale Crater since 2012, climbing Mount Sharp, a layered mountain in the middle that records Mars's history. Its radiation detector measured the everyday dose this game uses. The slopes make building harder.",
       "nodes": {
         "meteorite": 6,
         "lander_wreck": 1,
@@ -154,24 +156,26 @@
     {
       "id": "dust_flats",
       "name": "Dust Flats",
-      "tagline": "Wide open, and very dusty.",
+      "realPlace": "Hellas Planitia",
+      "tagline": "Deepest basin on mars: thicker air, thicker dust.",
       "buildableFraction": 0.95,
       "startMetal": 120,
-      "solarMult": 0.85,
-      "waterMult": 0.6,
-      "radiationMult": 1.0,
+      "solarMult": 0.8,
+      "waterMult": 0.8,
+      "radiationMult": 0.8,
       "buildCostMult": 1.0,
       "groundColour": "#c7865a",
       "rockColour": "#9a6a4a",
       "strengths": [
-        "The most flat ground to build on"
+        "The most flat ground to build on",
+        "The Thickest air on Mars blocks some radiation"
       ],
       "scarcities": [
-        "Water",
+        "Sunlight (far from the equator)",
         "Clean solar panels"
       ],
-      "risk": "Dust settles on solar panels and storms block the Sun.",
-      "scienceNote": "Dust is the enemy of solar power on Mars. Dust on its panels ended NASA's InSight lander in 2022, and a planet-wide dust storm ended the Opportunity rover in 2018.",
+      "risk": "Dust storms often start here and block the Sun.",
+      "scienceNote": "Hellas is one of the biggest impact basins in the Solar System, over 7 km deep. At the bottom the air pressure is almost double the nearby highlands, so more air blocks radiation, but it's still only about 1% of Earth's. Many big dust storms start here, and some grow to cover the whole planet, like the 2018 storm that ended NASA's Opportunity rover.",
       "nodes": {
         "meteorite": 5,
         "lander_wreck": 1,
