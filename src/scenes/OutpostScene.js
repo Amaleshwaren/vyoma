@@ -521,6 +521,7 @@ export class OutpostScene extends Phaser.Scene {
       const a = this.anchorFor(t);
       const r = this.controller.place(this.selected, a.x, a.y);
       if (!r.ok) bus.emit('toast', { text: r.reason, warn: true });
+      else bus.emit('placed', r);
     } else {
       const b = buildingAt(state, t.x, t.y);
       if (b) bus.emit('inspect', b);

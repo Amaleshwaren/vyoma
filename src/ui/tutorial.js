@@ -22,6 +22,10 @@ export function initTutorial({ controller, data }) {
   let mode = 'off'; // 'off' | 'steps' | 'tip'
   let flags = {}; // things that happened since the current step appeared
   const tipsShown = new Set();
+  // load every potrait up front so the art doesn't flicker when the commander's changes mood
+  Object.values(cfg.commander.portraits).forEach((p) => {
+    if (/[./]/.test(p)) new Image().src = p;
+  })
 
   // ---------- conditions ----------
 
@@ -67,11 +71,13 @@ export function initTutorial({ controller, data }) {
     $('cmd-next').classList.toggle('hidden', !button);
     $('cmd-skip').classList.toggle('hidden', !canSkip);
     $('commander').classList.remove('hidden');
+    document.body.classList.add('tutorial-on');
     spotlightTarget = target ?? null;
   }
 
   function hide() {
     $('commander').classList.add('hidden');
+    document.body.classList.remove('tutorial-on');
     $('spotlight').classList.add('hidden');
     spotlightTarget = null;
   }
@@ -82,7 +88,8 @@ export function initTutorial({ controller, data }) {
     const st = steps[i];
     flags = {};
     const last = i === steps.length - 1;
-    render({ mood: st.mood, text: st.text, target: st.target, button: st.next ? (last ? "Let's go" : 'Next') : null, canSkip: !last });
+    const button = st.next ? (last ? "Let's go" : 'Next') : 'Skip this step';
+    render({ mood: st.mood, text: st.text, target: st.target, button, canSkip: !last });
   }
 
   function advance() {

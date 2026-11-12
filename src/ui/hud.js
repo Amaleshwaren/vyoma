@@ -33,6 +33,7 @@ export function initHud({ controller, data, startGame }) {
     const s = getSector(data, selectedSector);
     $('sector-detail').innerHTML = `
       <h2>${esc(s.name)}</h2>
+      <p class="muted">Based on a real place: ${esc(s.realPlace)}</p>
       <dl>
         <dt>Buildable land</dt><dd>${Math.round(s.buildableFraction * 100)}%</dd>
         <dt>Sunlight</dt><dd>${powerWord(s.solarMult)}</dd>
@@ -177,6 +178,7 @@ export function initHud({ controller, data, startGame }) {
   $('build-btn').addEventListener('click', openShop);
   $('shop-close').addEventListener('click', () => $('shop').classList.add('hidden'));
   $('placing-done').addEventListener('click', stopPlacing);
+  bus.on('placed', stopPlacing);
   $('shop-grid').addEventListener('click', (e) => {
     const btn = e.target.closest('[data-build]');
     if (btn && !btn.disabled) startPlacing(btn.dataset.build);
