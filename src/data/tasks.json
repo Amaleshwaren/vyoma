@@ -34,7 +34,7 @@
     {
       "id": "power_negative",
       "title": "Power shortage",
-      "text": "Your base uses more power than it makes. Fix the balance before systems shut down.",
+      "text": "Your base uses more power than it makes. Add Solar Arrays, or one Fission Reactor: it replaces a whole field of panels and keeps working through dust storms.",
       "when": { "type": "powerBalanceBelow", "value": 0 },
       "done": { "type": "powerBalance", "min": 0 },
       "reward": { "metal": 10 },

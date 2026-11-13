@@ -32,7 +32,7 @@
       "height": 6,
       "colour": "#3a5fcd",
       "description": "Makes power from sunlight. How much depends on your landing sector.",
-      "scienceNote": "Mars gets about 43% of the sunlight Earth does, and dust on the panels cuts that further.",
+      "scienceNote": "Mars gets about 43% of the sunlight Earth does, and dust on the panels cuts that further. Far from the equator you need huge fields of panels, which is why NASA studies small nuclear reactors for crewed Mars bases.",
       "size": [
         2,
         2

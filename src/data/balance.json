@@ -56,7 +56,7 @@
     "habitatUnpoweredLimit": 2,
     "_failure": "Mission fails if the habitat had no power on 2 of the last 5 sols. One bad sol is survivable, repeated ones aren't."
   },
-  "demolishRefund": 0.5,
+  "demolishRefund": 0.75,
   "rover": {
     "start": 1,
     "speedTilesPerHour": 6,
