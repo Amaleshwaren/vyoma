@@ -77,6 +77,7 @@ export function initTutorial({ controller, data }) {
 
   function hide() {
     $('commander').classList.add('hidden');
+    $('tap-catcher').classList.add('hidden');
     document.body.classList.remove('tutorial-on');
     $('spotlight').classList.add('hidden');
     spotlightTarget = null;
@@ -90,6 +91,7 @@ export function initTutorial({ controller, data }) {
     const last = i === steps.length - 1;
     const button = st.next ? (last ? "Let's go" : 'Next') : 'Skip this step';
     render({ mood: st.mood, text: st.text, target: st.target, button, canSkip: !last });
+    $('tap-catcher').classList.toggle('hidden', !st.next);
   }
 
   function advance() {
@@ -120,14 +122,21 @@ export function initTutorial({ controller, data }) {
     tipsShown.add(key);
     mode = 'tip';
     render({ ...cfg.tips[key], target: null, button: 'Got it', canSkip: false });
+    $('tap-catcher').classList.remove('hidden');
   }
 
-  $('cmd-next').addEventListener('click', () => {
+  function onNext() {
     if (mode === 'tip') {
       mode = 'off';
       return hide();
     }
     advance();
+  }
+  $('cmd-next').addEventListener('click', onNext);
+  $('tap-catcher').addEventListener('click', onNext);
+  // tapping the board's text counts too, but only on reading steps
+  document.querySelector('#commander .cmd-body').addEventListener('click', (e) => {
+    if (!e.target.closest('button') && !$('tap-catcher').classList.contains('hidden')) onNext();
   });
   $('cmd-skip').addEventListener('click', finish);
 

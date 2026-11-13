@@ -583,7 +583,13 @@ button.primary {
 }
 
 /* ---------- commander tutorial ---------- */
-
+/* invisible layer on reading steps: any tap continues the tutorial instead of hitting the game underneath */
+#tap-catcher {
+  position: fixed;
+  inset: 0;
+  z-index: 195; /* above the spotlight (190), below the commander (200) */
+  cursor: pointer;
+}
 #spotlight {
   position: fixed;
   z-index: 190;
@@ -605,22 +611,22 @@ button.primary {
   z-index: 200;
   left: 12px;
   bottom: 12px;
-  width: min(580px, calc(100vw - 24px));
-  display: flex;
-  align-items: flex-end;
+  /* leaves the bottom-right free so the Build and Demolish buttons can still be tapped */
+  width: min(760px, calc(100vw - 320px));
   pointer-events: none; /* only the board and its buttons catch taps */
 }
+/* the commander stands BEHIND the board on its right end, visual-novel style: the board hides his legs */
 #cmd-portrait {
-  flex: 0 0 auto;
-  width: 130px;
-  height: 260px;
-  margin-right: -56px; /* the commander stands in front of the board and its name tab */
-  position: relative;
-  z-index: 1;
+  position: absolute;
+  left: 18px;
+  bottom: 34px;
+  width: min(210px, 33vh);
+  height: min(320px, 50vh); /* shrinks on short screens so his head stays clear of the build bar */
+  z-index: 0;
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  font-size: 3rem; /* emoji fallback */
+  font-size: 4rem; /* emoji fallback */
   filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.5));
 }
 #cmd-portrait img {
@@ -633,9 +639,9 @@ button.primary {
 .cmd-body {
   pointer-events: auto;
   position: relative;
-  flex: 1;
+  z-index: 1; /* in front of the commander */
   margin-top: 30px; /* room for the name tab */
-  padding: 14px 16px 12px 64px;
+  padding: 14px 18px 12px 22px;
   color: #0b2440;
   background: linear-gradient(115deg, #5fe6fd 0%, #5fe6fd 40%, #79ecff 47%, #5fe6fd 54%, #5fe6fd 100%);
   border: 5px solid #6c9dcd;
@@ -650,7 +656,7 @@ button.primary {
   position: absolute;
   left: 20px;
   top: -34px;
-  padding: 3px 34px 3px 52px;
+  padding: 3px 34px 3px 18px;
   background: #6c9dcd;
   clip-path: polygon(14px 0, calc(100% - 26px) 0, 100% 100%, 0 100%, 0 14px);
   font-family: var(--display);
@@ -661,7 +667,7 @@ button.primary {
 }
 #cmd-text {
   margin: 0 0 10px;
-  font-size: 1.02rem;
+  font-size: 1.05rem;
   line-height: 1.4;
   font-weight: 700;
 }
@@ -671,19 +677,19 @@ button.primary {
   color: #fff;
 }
 body.tutorial-on #placing {
-  bottom: 300px; /* sit above the commander so Cancel is never hidden */
+  /* the bottom belongs to the commander during the tutorial, so the build bar moves up top */
+  top: 150px;
+  bottom: auto;
 }
-@media (max-width: 600px) {
+@media (max-width: 700px) {
+  #commander {
+    width: calc(100vw - 24px);
+    bottom: 70px; /* above the Build button row */
+  }
   #cmd-portrait {
-    width: 110px;
-    height: 180px;
-    margin-right: -36px;
-  }
-  .cmd-body {
-    padding-left: 44px;
-  }
-  #cmd-name {
-    padding-left: 34px;
+    width: 130px;
+    height: 200px;
+    right: 8px;
   }
 }
 
