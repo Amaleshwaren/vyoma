@@ -52,7 +52,7 @@ function startGame(sectorId) {
 initHud({ controller, data, startGame });
 initMenu();
 const guide = initTutorial({ controller, data });
-document.getElementById('tutorial-toggle').checked = !tutorialDone(); // on for first-timers
+document.getElementById('tutorial-toggle').checked = true; // on for first-timers
 
 // open the game with ?debug in the URL to poke at it from the browser console: vyoma.controller.state
 if (new URLSearchParams(location.search).has('debug')) window.vyoma = { controller, game };
