@@ -700,3 +700,336 @@ body.tutorial-on #placing {
   margin-bottom: 12px;
   cursor: pointer;
 }
+
+/* ---------- title screen ---------- */
+
+#title-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+  overflow: hidden;
+  background: #0b0507;
+}
+.title-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 30% 50%;
+  transform-origin: 33% 68%; /* the big crater: New game dives into it */
+  transition: transform 1.1s cubic-bezier(0.6, 0, 0.9, 0.4); /* keep in step with ZOOM_MS in menu.js */
+}
+.title-logo {
+  position: absolute;
+  right: 3%;
+  top: 5%;
+  width: min(46vw, 78vh);
+  transition: opacity 0.3s;
+}
+.title-menu {
+  position: absolute;
+  right: 6%;
+  top: 54%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1.4vh;
+  transition: opacity 0.3s;
+}
+.title-menu button,
+.menu-toggle {
+  background: none;
+  border: none;
+  padding: 4px 0;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(1.4rem, 4vh, 2.4rem);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+  cursor: pointer;
+}
+.title-menu button::after {
+  content: ' ◂';
+  color: #ff6a3d;
+}
+.title-menu button:hover:not(:disabled) {
+  color: #ffc49a;
+  border: none;
+}
+.menu-toggle {
+  font-size: clamp(1rem, 2.6vh, 1.5rem);
+  color: #e8d6cf;
+}
+.menu-toggle input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.menu-toggle:focus-within {
+  outline: 3px solid var(--sky);
+}
+.menu-toggle .when-on,
+.menu-toggle input:checked ~ .when-off {
+  display: none;
+}
+.menu-toggle input:checked ~ .when-on {
+  display: inline;
+  color: var(--ok);
+}
+/* New game: dive into the crater, then fade to the cockpit's pale blue */
+#title-screen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #dff3fc;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.45s ease-in 0.65s;
+}
+#title-screen.zooming::after {
+  opacity: 1;
+}
+#title-screen.zooming .title-bg {
+  transform: scale(4);
+}
+#title-screen.zooming .title-logo,
+#title-screen.zooming .title-menu {
+  opacity: 0;
+}
+
+/* ---------- sector picker: the lander's cockpit ---------- */
+/* everything is placed in % of the 1920x1080 cockpit art, and text uses cqw (1% of the cockpit's width),
+   so the whole cockpit scales as one picture on any screen */
+
+#sector-picker {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: #dff3fc; /* matches the art's edges, so letterboxing is invisible */
+  overflow: hidden;
+}
+.cockpit {
+  position: relative;
+  width: min(100vw, calc(100vh * 16 / 9));
+  aspect-ratio: 16 / 9;
+  container-type: inline-size;
+  animation: cockpit-in 0.5s ease-out;
+}
+@keyframes cockpit-in {
+  from {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+}
+.cockpit > * {
+  position: absolute;
+}
+.cockpit-bg,
+.cockpit-screen {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.cockpit-screen {
+  mask-size: 100% 100%;
+  -webkit-mask-size: 100% 100%;
+}
+.cockpit-screen > img {
+  position: absolute;
+  left: 5.2%;
+  top: 8.7%;
+  width: 89.2%;
+  height: 79.6%;
+  object-fit: cover;
+}
+.cockpit-glass {
+  opacity: 0.18; /* the designer's scanline glass, faint so the painting shows through */
+  pointer-events: none;
+}
+.cockpit-screen::after {
+  /* screen glow at the window edges, like the cockpit art */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(47, 188, 250, 0.5) 100%);
+  pointer-events: none;
+}
+.cockpit-title {
+  left: 0;
+  right: 0;
+  top: 11%;
+  margin: 0;
+  text-align: center;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 3.3cqw;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #d4f4ff;
+  text-shadow: 0 0.2cqw 0.8cqw rgba(0, 20, 40, 0.9);
+}
+.cockpit-arrow {
+  top: 24%;
+  width: 6.5%;
+  padding: 1cqw 1.2cqw;
+  background: rgba(8, 20, 36, 0.6); /* dark disc so the pale arrow shows on any painting */
+  border: none;
+  border-radius: 50%;
+  filter: drop-shadow(0 0.3cqw 0.6cqw rgba(0, 20, 40, 0.7));
+  transition: transform 0.15s;
+}
+.cockpit-arrow img {
+  width: 100%;
+  display: block;
+}
+.cockpit-arrow:hover:not(:disabled) {
+  border: none;
+  background: rgba(8, 20, 36, 0.85);
+  transform: scale(1.1);
+}
+#sector-prev {
+  left: 8%;
+}
+#sector-next {
+  right: 8%;
+}
+#sector-next img {
+  transform: scaleX(-1);
+}
+/* the console screen: sits where the keypad grid was, so the painting in the window stays clear */
+#sector-info {
+  left: 7%;
+  top: 80%;
+  width: 44%;
+  height: 18.5%;
+  padding: 0.8cqw 1.2cqw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: max(11px, 1.05cqw);
+  line-height: 1.25;
+  color: var(--text);
+  background: linear-gradient(180deg, #0d2238 0%, #08182a 100%);
+  border: 0.45cqw solid #c5d3e6; /* console-plastic bezel */
+  border-radius: 0.8cqw;
+  box-shadow:
+    inset 0 0 1.2cqw rgba(76, 195, 245, 0.35),
+    0 0.3cqw 0 #8fa3bf;
+  overflow: hidden;
+}
+#sector-info p {
+  margin: 0;
+}
+.sector-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8cqw;
+}
+.sector-head h2 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 2cqw;
+  line-height: 1;
+  color: #d4f4ff;
+  white-space: nowrap;
+}
+.sector-real {
+  color: var(--muted);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sector-real b {
+  color: var(--text);
+}
+.sector-count {
+  color: var(--muted);
+}
+.sector-stats {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35cqw;
+}
+.sector-stats li {
+  background: #17304a;
+  border-radius: 0.4cqw;
+  padding: 0.1cqw 0.5cqw;
+}
+.sector-risk {
+  color: var(--warn);
+}
+.science-btn {
+  align-self: flex-start;
+  padding: 0.15cqw 0.7cqw;
+  font-size: 0.95em;
+  color: var(--sky);
+  background: #17304a;
+  border: 0.12cqw solid var(--sky);
+  border-radius: 0.4cqw;
+}
+/* the science note: pops up over the window only when asked for; tap it to close */
+#sector-science {
+  left: 15%; /* clear of the left arrow */
+  top: 19%;
+  width: 42%;
+  margin: 0;
+  padding: 1cqw 1.4cqw;
+  font-size: max(12px, 1.15cqw);
+  line-height: 1.4;
+  color: var(--text);
+  background: rgba(8, 20, 36, 0.85);
+  border: 0.15cqw solid var(--sky);
+  border-radius: 0.6cqw;
+  cursor: pointer;
+}
+#land-btn {
+  left: 52.6%;
+  top: 72%;
+  width: 21.6%;
+  padding: 0;
+  background: none;
+  border: none;
+}
+.sector-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.8cqw;
+}
+.land-hint {
+  color: #ff8a80;
+  font-weight: 700;
+  white-space: nowrap;
+}
+#land-btn img {
+  width: 100%;
+  display: block;
+}
+#land-btn .down,
+#land-btn.pressed .up {
+  display: none;
+}
+#land-btn.pressed .down {
+  display: block;
+}
+#land-btn:hover:not(:disabled) {
+  border: none;
+  filter: brightness(1.1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .title-bg,
+  .cockpit {
+    transition: none;
+    animation: none;
+  }
+}

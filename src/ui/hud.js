@@ -13,46 +13,78 @@ const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&l
 const consumerName = (data, id) => (id === 'rover' ? 'Rovers' : getDef(data, id).name);
 const radiationWord = (m) => (m < 0.5 ? 'Very low' : m < 0.95 ? 'Low' : m <= 1.05 ? 'Average' : 'High');
 const powerWord = (m) => (m < 0.5 ? 'Very weak' : m < 0.95 ? 'Weak' : m <= 1.05 ? 'Average' : 'Strong');
+const iceWord = (m) => (m < 0.7 ? 'Scarce' : m < 0.95 ? 'Some' : m <= 1.05 ? 'Average' : 'Plenty');
 
 export function initHud({ controller, data, startGame }) {
   let selectedSector = null;
   let selectedBuilding = null;
   let inspectedNodeId = null;
 
-  // ---------- sector picker ----------
+  // ---------- sector picker: the lander's cockpit ----------
+  // one sector at a time in the cockpit window; the arrows (or the ← → keys) flip through them,
+  // and the big red console button (or Enter) lands.
 
-  $('sector-grid').innerHTML = data.sectors
-    .map((s) => `<button class="sector-btn" data-sector="${s.id}"><strong>${esc(s.name)}</strong><span>${esc(s.tagline)}</span></button>`)
-    .join('');
+  let sectorIndex = 0;
+  let landing = false;
+  data.sectors.forEach((s) => (new Image().src = `art/sectors/${s.id}.webp`)); // preload so the arrows swap instantly
 
-  $('sector-grid').addEventListener('click', (e) => {
-    const btn = e.target.closest('[data-sector]');
-    if (!btn) return;
-    selectedSector = btn.dataset.sector;
-    document.querySelectorAll('.sector-btn').forEach((b) => b.classList.toggle('active', b === btn));
-    const s = getSector(data, selectedSector);
-    $('sector-detail').innerHTML = `
-      <h2>${esc(s.name)}</h2>
-      <p class="muted">Based on a real place: ${esc(s.realPlace)}</p>
-      <dl>
-        <dt>Buildable land</dt><dd>${Math.round(s.buildableFraction * 100)}%</dd>
-        <dt>Sunlight</dt><dd>${powerWord(s.solarMult)}</dd>
-        <dt>Radiation</dt><dd>${radiationWord(s.radiationMult)}</dd>
-        <dt>Good for</dt><dd>${s.strengths.map(esc).join(', ')}</dd>
-        <dt>Short on</dt><dd>${s.scarcities.map(esc).join(', ')}</dd>
-        <dt>Risk</dt><dd>${esc(s.risk)}</dd>
-      </dl>
-      <p class="science">${esc(s.scienceNote)}</p>`;
-    $('land-btn').disabled = false;
+  function showSector(i) {
+    const n = data.sectors.length;
+    sectorIndex = (i + n) % n;
+    const s = data.sectors[sectorIndex];
+    selectedSector = s.id;
+    $('sector-view').src = `art/sectors/${s.id}.webp`;
+    $('sector-view').alt = `${s.name}, based on ${s.realPlace}`;
+    // the console screen: short facts only, so the painting in the window stays clear
+    $('sector-info').innerHTML = `
+      <div class="sector-head">
+        <h2>${esc(s.name)}</h2>
+        <span class="sector-real">real place: <b>${esc(s.realPlace)}</b></span>
+        <span class="sector-count">${sectorIndex + 1}/${n}</span>
+      </div>
+      <ul class="sector-stats">
+        <li>☀️ Sun <b>${powerWord(s.solarMult)}</b></li>
+        <li>🧊 Ice <b>${iceWord(s.waterMult)}</b></li>
+        <li>☢️ Radiation <b>${radiationWord(s.radiationMult)}</b></li>
+        <li>🏗️ Room <b>${Math.round(s.buildableFraction * 100)}%</b></li>
+      </ul>
+      <p class="sector-risk">⚠️ ${esc(s.risk)}</p>
+      <div class="sector-foot">
+        <button class="science-btn" type="button">ⓘ The real science</button>
+        <span class="land-hint">Press the red button to land ▸</span>
+      </div>`;
+    $('sector-science').textContent = s.scienceNote; // only shown over the window when asked for
+  }
+
+  function land() {
+    if (landing || $('sector-picker').classList.contains('hidden')) return;
+    landing = true;
+    $('land-btn').classList.add('pressed'); // red turns green: landing confirmed
+    setTimeout(() => {
+      $('sector-picker').classList.add('hidden');
+      $('land-btn').classList.remove('pressed');
+      landing = false;
+      $('debrief').classList.add('hidden');
+      $('hud').classList.remove('hidden');
+      startGame(selectedSector);
+    }, 450);
+  }
+
+  // the science note pops up over the window on request, and stays open while flipping sectors
+  $('sector-info').addEventListener('click', (e) => {
+    if (e.target.closest('.science-btn')) $('sector-science').classList.toggle('hidden');
   });
-
-  $('land-btn').addEventListener('click', () => {
-    if (!selectedSector) return;
-    $('sector-picker').classList.add('hidden');
-    $('debrief').classList.add('hidden');
-    $('hud').classList.remove('hidden');
-    startGame(selectedSector);
+  $('sector-science').addEventListener('click', () => $('sector-science').classList.add('hidden'));
+  $('sector-prev').addEventListener('click', () => showSector(sectorIndex - 1));
+  $('sector-next').addEventListener('click', () => showSector(sectorIndex + 1));
+  $('land-btn').addEventListener('click', land);
+  window.addEventListener('keydown', (e) => {
+    if ($('sector-picker').classList.contains('hidden')) return;
+    if (e.code === 'ArrowLeft') showSector(sectorIndex - 1);
+    if (e.code === 'ArrowRight') showSector(sectorIndex + 1);
+    if (e.code === 'Enter' && !e.target.closest('button')) land(); // a focused button already clicks itself on Enter
   });
+  showSector(0);
 
   // ---------- sol controls ----------
 

@@ -12,6 +12,7 @@ import { GameController } from './game/controller.js';
 import { OutpostScene } from './scenes/OutpostScene.js';
 import { initHud } from './ui/hud.js';
 import { initTutorial, tutorialDone } from './ui/tutorial.js';
+import { initMenu } from './ui/menu.js';
 
 const data = {
   balance,
@@ -49,6 +50,7 @@ function startGame(sectorId) {
 }
 
 initHud({ controller, data, startGame });
+initMenu();
 const guide = initTutorial({ controller, data });
 document.getElementById('tutorial-toggle').checked = !tutorialDone(); // on for first-timers
 

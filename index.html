@@ -79,14 +79,36 @@
       </div>
     </div>
 
-    <!-- sector picker (designer art goes here later) -->
-    <div id="sector-picker" class="overlay">
-      <div class="panel">
-        <h1>Choose your landing sector</h1>
-        <div id="sector-grid"></div>
-        <div id="sector-detail"><p class="muted">Pick a sector to see what you're getting into.</p></div>
-        <label class="tutorial-toggle"><input type="checkbox" id="tutorial-toggle" /> Show the commander's tutorial</label>
-        <button id="land-btn" class="primary" disabled>Land here</button>
+    <!-- title screen: shown first -->
+    <div id="title-screen">
+      <img class="title-bg" src="art/menu/title-bg.webp" alt="" />
+      <img class="title-logo" src="art/menu/logo.webp" alt="Vyoma" />
+      <nav class="title-menu">
+        <button id="new-game-btn">New game</button>
+        <label class="menu-toggle">
+          <input type="checkbox" id="tutorial-toggle" />
+          Tutorial: <span class="when-on">on</span><span class="when-off">off</span>
+        </label>
+      </nav>
+    </div>
+
+    <!-- sector picker: the lander's cockpit -->
+    <div id="sector-picker" class="hidden">
+      <div class="cockpit">
+        <img class="cockpit-bg" src="art/menu/cockpit.webp" alt="" />
+        <div class="cockpit-screen" style="mask-image: url(art/menu/window-mask.png); -webkit-mask-image: url(art/menu/window-mask.png)">
+          <img id="sector-view" alt="" />
+          <img class="cockpit-glass" src="art/menu/glass.webp" alt="" />
+        </div>
+        <h1 class="cockpit-title">Choose your landing sector</h1>
+        <button id="sector-prev" class="cockpit-arrow" aria-label="Previous sector"><img src="art/menu/arrow.webp" alt="" /></button>
+        <button id="sector-next" class="cockpit-arrow next" aria-label="Next sector"><img src="art/menu/arrow.webp" alt="" /></button>
+        <p id="sector-science" class="hidden"></p>
+        <div id="sector-info"></div>
+        <button id="land-btn" aria-label="Land here">
+          <img class="up" src="art/menu/btn-red.webp" alt="" />
+          <img class="down" src="art/menu/btn-green.webp" alt="" />
+        </button>
       </div>
     </div>
 
