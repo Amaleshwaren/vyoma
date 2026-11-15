@@ -26,6 +26,22 @@ const shade = (col, f) => {
   return (r << 16) | (g << 8) | b;
 };
 
+// one faceted cartoon rock: shadow, dark body, lit top, highlight, dark outline (matches the building art's style)
+function drawRock(g, cx, cy, s, col, rnd) {
+  const pts = [];
+  for (let i = 0; i < 6; i++) {
+    const a = (i / 6) * Math.PI * 2 + rnd() * 0.5;
+    const r = s * (0.8 + rnd() * 0.3);
+    pts.push({ x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r * 0.7 });
+  }
+  const top = pts.map((p) => ({ x: cx + (p.x - cx) * 0.78, y: cy - s * 0.35 + (p.y - cy) * 0.7 }));
+  g.fillStyle(0x000000, 0.25).fillEllipse(cx + 1, cy + s * 0.55, s * 2.1, s * 0.8);
+  g.fillStyle(shade(col, 0.55), 1).fillPoints(pts, true);
+  g.fillStyle(shade(col, 0.95), 1).fillPoints(top, true);
+  g.fillStyle(shade(col, 1.25), 1).fillPoints([top[3], top[4], { x: cx, y: cy - s * 0.35 }], true);
+  g.lineStyle(1.5, shade(col, 0.3), 1).strokePoints(pts, true);
+}
+
 export class OutpostScene extends Phaser.Scene {
   constructor() {
     super('Outpost');
@@ -38,9 +54,25 @@ export class OutpostScene extends Phaser.Scene {
     this.dragging = false;
   }
 
+  // the designer's building art. anything missing or failing to load falls back to the drawn placeholder.
+  preload() {
+    for (const def of this.controller.data.buildings) {
+      const key = `bld_${def.id}`;
+      if (!this.textures.exists(key)) this.load.image(key, `art/buildings/${def.id}.webp`);
+    }
+    if (!this.textures.exists('rover')) this.load.image('rover', 'art/buildings/rover.webp');
+  }
+
+  // building art is drawn at 2x; scale any texture so it spans its footprint, with a small gap to its neighbours
+  fitFootprint(img, w) {
+    return img.setScale((w * T * 0.94) / img.width);
+  }
+
   create() {
     const { state } = this.controller;
     this.sector = this.controller.data.sectors.find((s) => s.id === state.sectorId);
+    // remember which buildings got real art before makeTextures() fills the gaps with placeholders
+    this.hasArt = new Set(this.controller.data.buildings.filter((d) => this.textures.exists(`bld_${d.id}`)).map((d) => d.id));
     this.makeTextures();
 
     const n = state.grid.size;
@@ -127,7 +159,7 @@ export class OutpostScene extends Phaser.Scene {
   tileKey(x, y) {
     const { grid } = this.controller.state;
     const t = grid.terrain[y * grid.size + x];
-    if (t === 'cliff') return `cliff_${this.sector.id}`;
+    if (t === 'cliff') return `cliff_${this.sector.id}_${(x * 5 + y * 11) % 3}`;
     return `ground_${this.sector.id}_${(x * 7 + y * 13) % 3}`; // 3 ground variants so it doesn't look tiled
   }
 
@@ -149,13 +181,32 @@ export class OutpostScene extends Phaser.Scene {
       });
     }
 
-    // cliff: raised dark rock with a lit top edge and a shadowed front
-    this.makeTexture(`cliff_${this.sector.id}`, T, T, (g) => {
-      g.fillStyle(shade(ground, 0.5), 1).fillRect(0, 0, T, T);
-      g.fillStyle(shade(rock, 0.75), 1).fillRect(2, 2, T - 4, T - 14);
-      g.fillStyle(shade(rock, 1.1), 1).fillRect(2, 2, T - 4, 6);
-      g.fillStyle(shade(rock, 0.45), 1).fillRect(2, T - 12, T - 4, 10);
-    });
+    // cliff: a cluster of faceted rocks, 3 variants so ridges don't look stamped.
+    // same chunky outlined style as the building art.
+    for (let v = 0; v < 3; v++) {
+      this.makeTexture(`cliff_${this.sector.id}_${v}`, T, T, (g) => {
+        let seed = 101 + v * 57;
+        const rnd = () => ((seed = (seed * 9301 + 49297) % 233280) / 233280);
+        g.fillStyle(ground, 1).fillRect(0, 0, T, T); // same ground as open tiles, so ridges have no square edges
+        const spots = [
+          [13, 13, 9],
+          [35, 10, 7],
+          [14, 31, 12],
+          [33, 25, 13],
+          [31, 40, 8],
+        ];
+        for (const [cx, cy, s] of spots) drawRock(g, cx + (rnd() - 0.5) * 6, cy + (rnd() - 0.5) * 6, s * (0.85 + rnd() * 0.3), rock, rnd);
+      });
+    }
+    // small rock clusters scattered on open ground, like real Mars rover photos
+    for (let v = 0; v < 3; v++) {
+      this.makeTexture(`deco_rocks_${v}`, T, T, (g) => {
+        let seed = 7 + v * 83;
+        const rnd = () => ((seed = (seed * 9301 + 49297) % 233280) / 233280);
+        const count = 2 + Math.floor(rnd() * 3);
+        for (let i = 0; i < count; i++) drawRock(g, 10 + rnd() * 28, 14 + rnd() * 24, 3 + rnd() * 4, rock, rnd);
+      });
+    }
 
     // white so it can be tinted green / red / yellow
     this.makeTexture('tile_hover', T, T, (g) => {
@@ -252,7 +303,8 @@ export class OutpostScene extends Phaser.Scene {
         if (Math.hypot(x - hx, y - hy) < 3) continue;
         const roll = rng();
         if (roll < 0.03) this.add.image(x * T, y * T, 'deco_crater').setOrigin(0).setDepth(0.5);
-        else if (roll < 0.12) this.add.image(x * T, y * T, 'deco_pebbles').setOrigin(0).setDepth(0.5);
+        else if (roll < 0.1) this.add.image(x * T, y * T, 'deco_pebbles').setOrigin(0).setDepth(0.5);
+        else if (roll < 0.2) this.add.image(x * T + (rng() - 0.5) * 16, y * T + (rng() - 0.5) * 16, `deco_rocks_${Math.floor(rng() * 3)}`).setOrigin(0).setDepth(0.5);
       }
     }
   }
@@ -339,18 +391,40 @@ export class OutpostScene extends Phaser.Scene {
     for (const s of this.buildingSprites) {
       s.box.destroy();
       s.icon.destroy();
+      s.shadow?.destroy();
     }
     this.buildingSprites = [];
     const { state, data } = this.controller;
     for (const b of state.buildings) {
       const def = getDef(data, b.type);
       // bottom-centre of the texture sits on the bottom edge of the footprint, so the roof overlaps the row above (3/4 view)
-      const box = this.add
-        .image((b.x + b.w / 2) * T, (b.y + b.h) * T, `bld_${def.id}`)
-        .setOrigin(0.5, 1)
-        .setDepth(10 + b.y + b.h - 1 + 0.2);
+      const box = this.fitFootprint(
+        this.add
+          .image((b.x + b.w / 2) * T, (b.y + b.h) * T, `bld_${def.id}`)
+          .setOrigin(0.5, 1)
+          .setDepth(10 + b.y + b.h - 1 + 0.2),
+        b.w
+      );
+      // ground the art: a low pad of packed regolith under its base, plus a soft shadow cast down-right
+      // (light from the top-left). without it the sprites look pasted on top of the map.
+      let shadow = null;
+      if (this.hasArt.has(def.id)) {
+        const ground = hexToInt(this.sector.groundColour);
+        const pw = b.w * T * 0.98;
+        const ph = Math.min(b.w * T * 0.42, b.h * T - 4);
+        shadow = this.add
+          .graphics()
+          .setDepth(5) // under every building, over the ground
+          .fillStyle(0x000000, 0.22)
+          .fillEllipse(box.x + 6, box.y - ph / 2 + 3, pw * 1.02, ph * 1.05)
+          .fillStyle(shade(ground, 0.62), 1)
+          .fillEllipse(box.x, box.y - ph / 2 - 2, pw, ph)
+          .fillStyle(shade(ground, 0.8), 1)
+          .fillEllipse(box.x, box.y - ph / 2 - 4, pw * 0.9, ph * 0.8);
+      }
       const sol = state.sol + 1;
-      let iconText = def.growSols && b.growth < def.growSols ? '🌱' : def.icon;
+      // the art already shows what a building is, so only status icons float above it
+      let iconText = def.growSols && b.growth < def.growSols ? '🌱' : this.hasArt.has(def.id) ? '' : def.icon;
       if (b.broken) {
         box.setTint(0xb05050); // red = broken
         iconText = '🔧';
@@ -359,11 +433,11 @@ export class OutpostScene extends Phaser.Scene {
         iconText = '💤'; // switched off for the storm
       } else if (!b.powered) box.setTint(0x555555); // grey = no power
       const icon = this.add
-        .text(box.x, box.y - box.height + 20, iconText, { fontSize: b.w > 1 ? '24px' : '18px' })
+        .text(box.x, box.y - box.displayHeight + 20, iconText, { fontSize: b.w > 1 ? '24px' : '18px' })
         .setOrigin(0.5)
         .setAlpha(b.powered ? 1 : 0.5)
         .setDepth(10 + b.y + b.h - 1 + 0.3);
-      this.buildingSprites.push({ box, icon });
+      this.buildingSprites.push({ box, icon, shadow });
     }
   }
 
@@ -377,7 +451,7 @@ export class OutpostScene extends Phaser.Scene {
       }
     }
     for (const r of state.rovers) {
-      if (!this.roverSprites.has(r.id)) this.roverSprites.set(r.id, this.add.image(0, 0, 'rover').setOrigin(0.5, 0.8));
+      if (!this.roverSprites.has(r.id)) this.roverSprites.set(r.id, this.add.image(0, 0, 'rover').setOrigin(0.5, 0.8).setScale(Math.min(1, 36 / this.textures.get('rover').getSourceImage().width))); // art is 2x: show it 36 px wide
     }
     this.positionRovers();
   }
@@ -471,8 +545,7 @@ export class OutpostScene extends Phaser.Scene {
         .lineStyle(3, ok ? 0x7cfc9a : 0xff6b6b, 0.9)
         .strokeRect(a.x * T + 1.5, a.y * T + 1.5, a.w * T - 3, a.h * T - 3)
         .setVisible(true);
-      this.ghost
-        .setTexture(`bld_${this.selected}`)
+      this.fitFootprint(this.ghost.setTexture(`bld_${this.selected}`), a.w)
         .setOrigin(0.5, 1)
         .setPosition((a.x + a.w / 2) * T, (a.y + a.h) * T)
         .setTint(ok ? 0xffffff : 0xff8080)
